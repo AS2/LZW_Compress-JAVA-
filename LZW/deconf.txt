@@ -1,0 +1,5 @@
+SRC_FILE = res2.txt
+DIR_FILE = deres2.txt
+BUFFER_SIZE = 3
+MAX_BITS = 24
+MODE = 1
