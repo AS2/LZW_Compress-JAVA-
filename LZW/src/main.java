@@ -6,8 +6,8 @@ public class main {
             if (error.errNo != 0)
                 System.out.println(error.errMessage);
             else {
-                LZW lzw = new LZW();
-                lzw.LZWFunction(ci);
+                LZW lzw = new LZW(ci);
+                lzw.LZWFunction();
 
                 if (error.errNo != 0)
                     System.out.println(error.errMessage);

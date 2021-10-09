@@ -1,5 +1,5 @@
 SRC_FILE = orwell.txt
 DIR_FILE = res2.txt
-BUFFER_SIZE = 3
-MAX_BITS = 24
+BUFFER_SIZE = 12
+MAX_BITS = 31
 MODE = 0

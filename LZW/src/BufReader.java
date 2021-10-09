@@ -1,21 +1,24 @@
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class BufReader {
-    final private int charBitsCnt = 8;
+    final private int charBitsCnt = 8;      // length of 'char' type in bits
 
-    private File fileToRead;
-    private FileInputStream fileToReadStream;
+    private final FileInputStream fileToReadStream;     // stream of file to read
 
-    private byte[] buffer;
-    private int maxBufferSize, currentBufferSize, bufPos;
-    private short bitePartLength;
-    private byte bytePart;
+    private byte[] buffer;          // read buffer
+    private int maxBufferSize,      // max buffer length
+                currentBufferSize,  // current buffer size
+                bufPos;             // position of first unread symbol in buffer
+    private byte bytePart;          // remained byte part
+    private short bitePartLength;   // length of remained byte part
 
-    private boolean isAllReaden;
+    private boolean isAllReaden;    // flag - if file readen - 1, if not - 0
 
+    // Convert "unsigned" char to int method
+    // Args: - Byte - Byte to parse
+    // Return: int - parsed Byte
     private int ConvertToInt(byte Byte) {
         if (Byte < 0)
             return (int)(Byte) + 256;
@@ -23,6 +26,10 @@ public class BufReader {
             return (Byte);
     }
 
+    // Correct unsigned left shift method
+    // Args: - num - number to shift left
+    //       - shifts - shifts count
+    // Return: byte - shifted number
     private byte ByteCorrectShiftLeft(byte num, int shifts) {
         if (shifts >= 1) {
             if ((num & (byte)(-128)) == (byte)(-128)) {
@@ -39,9 +46,11 @@ public class BufReader {
         return num;
     }
 
+    // Buffer reader constructor
+    // Args: - fileToReadPath - file path to read
+    //       - maxBufSize - max read buffer size
     BufReader(String fileToReadPath, int maxBufSize) throws FileNotFoundException {
-        fileToRead = new File(fileToReadPath);
-        fileToReadStream = new FileInputStream(fileToRead);
+        fileToReadStream = new FileInputStream(fileToReadPath);
 
         if (maxBufSize <= 0) {
             error.UpdateError(2, "LE: Incorrect buffer length");
@@ -52,6 +61,9 @@ public class BufReader {
         maxBufferSize = maxBufSize;
     }
 
+    // Update buffer method
+    // Args: - fileToReadPath - file path to read
+    //       - maxBufSize - max read buffer size
     public void RereadBuffer() throws IOException {
         if (bufPos == currentBufferSize && !isAllReaden) {
             currentBufferSize = fileToReadStream.read(buffer, 0, maxBufferSize);
@@ -60,6 +72,8 @@ public class BufReader {
         }
     }
 
+    // Read N bites from file method
+    // Args: - bitsCount - bits count to read
     public int ReadNBits(int bitsCount) throws IOException {
         int res = (short)bytePart;
         int bitsRemains = bitsCount - bitePartLength;
@@ -70,13 +84,13 @@ public class BufReader {
 
             RereadBuffer();
             // we read all file
-            if (isFileReaden()) {
+            if (isFileRead()) {
                 res = res << bitsRemains;
                 return res;
             }
         }
 
-        if (bitsRemains != 0 && isFileReaden()) {
+        if (bitsRemains != 0 && isFileRead()) {
             res = res << bitsRemains;
             return res;
         }
@@ -97,10 +111,13 @@ public class BufReader {
         return res;
     }
 
-    public boolean isFileReaden() {
+    // Checks is file read method
+    // Returns: - boolean: True - file is already read, False - file hasn't been read yet
+    public boolean isFileRead() {
         return isAllReaden && (bufPos == currentBufferSize || currentBufferSize == -1);
     }
 
+    // Close read buffer method
     public void CloseReader() throws IOException {
         fileToReadStream.close();
     }
