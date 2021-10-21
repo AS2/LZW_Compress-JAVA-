@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 
 class ConfigInfo {
@@ -22,7 +21,7 @@ class ConfigInfo {
             while ((line = br.readLine()) != null) {
                 String[] stringComponents = line.split(grammar.splitSymbol);
                 if (stringComponents.length != grammar.fieldsPerLine) {
-                    error.UpdateError(1, "LE: Bad config parameter line");
+                    error.UpdateError(error.ErrorCode.CONF_ERR, "LE: Bad config parameter line");
                     return;
                 }
                 else {
@@ -38,7 +37,7 @@ class ConfigInfo {
                         }
 
                     if (isFieldTypeRecognized != 1) {
-                        error.UpdateError(1, "LE: Unrecognized config parameter type '" + stringComponents[0] + "'");
+                        error.UpdateError(error.ErrorCode.CONF_ERR, "LE: Unrecognized config parameter type '" + stringComponents[0] + "'");
                         return;
                     }
 
@@ -47,7 +46,7 @@ class ConfigInfo {
             }
         }
         catch (IOException ex) {
-            error.UpdateError(1, "RE: Cannot open config to read");
+            error.UpdateError(error.ErrorCode.CONF_ERR, "RE: Cannot open config to read");
         }
     }
 

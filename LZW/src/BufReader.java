@@ -3,7 +3,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class BufReader {
-    final private int charBitsCnt = 8;      // length of 'char' type in bits
+    final static private int charBitsCnt = 8;      // length of 'char' type in bits
 
     private final FileInputStream fileToReadStream;     // stream of file to read
 
@@ -53,7 +53,7 @@ public class BufReader {
         fileToReadStream = new FileInputStream(fileToReadPath);
 
         if (maxBufSize <= 0) {
-            error.UpdateError(2, "LE: Incorrect buffer length");
+            error.UpdateError(error.ErrorCode.LZW_PROC_ERR, "LE: Incorrect buffer length");
             return;
         }
 
@@ -70,6 +70,13 @@ public class BufReader {
             isAllReaden = currentBufferSize < maxBufferSize ||  currentBufferSize == -1;
             bufPos = 0;
         }
+    }
+
+
+    public byte ReadByte() throws IOException {
+        byte toReturn = buffer[bufPos++];
+        RereadBuffer();
+        return toReturn;
     }
 
     // Read N bites from file method

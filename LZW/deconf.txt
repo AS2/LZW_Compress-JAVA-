@@ -1,5 +1,5 @@
-SRC_FILE = res2.txt
-DIR_FILE = deres2.txt
+SRC_FILE = res2_bytes.txt
+DIR_FILE = deres2_bytes.txt
 BUFFER_SIZE = 5
-MAX_BITS = 31
+MAX_BITS = 11
 MODE = 1

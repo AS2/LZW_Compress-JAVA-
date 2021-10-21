@@ -3,8 +3,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class BufWritter {
-    final private int intBitsCnt = 32;   // bits in 'int' type
-    final private int charBitsCnt = 8;   // bits in 'char' type
+    final static private int intBitsCnt = 32;   // bits in 'int' type
+    final static private int charBitsCnt = 8;   // bits in 'char' type
 
     private final FileOutputStream fileToWriteStream;   // file stream to write result
 
@@ -21,7 +21,7 @@ public class BufWritter {
         fileToWriteStream = new FileOutputStream(fileToWritePath);
 
         if (bufferLen <= 0) {
-            error.UpdateError(2, "LE: Incorrect buffer length");
+            error.UpdateError(error.ErrorCode.LZW_PROC_ERR, "LE: Incorrect buffer length");
             return;
         }
 
@@ -67,11 +67,9 @@ public class BufWritter {
 
     // Write string in buffer method
     // Args: - str - string to write in buffer
-    public void WriteString(String str) throws IOException {
-        char[] strInChars = str.toCharArray();
-
-        for (char ch : strInChars)
-            AddToBuffer(ch, charBitsCnt);
+    public void WriteString(byte[] word, int wordLength) throws IOException {
+        for (int i = 0; i < wordLength; i++)
+            AddToBuffer(word[i], charBitsCnt);
     }
 
     // Close writter (write last buffer to file) method

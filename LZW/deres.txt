@@ -1,6 +1,0 @@
-Hello there!
-I'd like to be compressed and decompressed!
-
-Test: ababaabaabaabbaaaaabbaba
-
-Good luck to read me after decompressing!
