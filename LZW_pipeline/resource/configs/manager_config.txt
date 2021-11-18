@@ -1,5 +1,0 @@
-SRC_FILE = resource/res/encode1.txt
-DIR_FILE = resource/res/decode1.txt
-EXECUTOR_CONFIG = resource/configs/executor_config.txt
-READER_CONFIG = resource/configs/reader_config.txt
-WRITER_CONFIG = resource/configs/writer_config.txt

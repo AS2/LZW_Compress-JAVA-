@@ -1,2 +1,0 @@
-MODE = DECODE
-MAX_BITS = 21

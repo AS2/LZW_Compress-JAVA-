@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="LZW_Executor">
+    <output-path>$PROJECT_DIR$/artefacts</output-path>
+    <root id="archive" name="LZW_Executor.jar">
+      <element id="module-output" name="LZW_Executor" />
+      <element id="artifact" artifact-name="LZW_Common" />
+    </root>
+  </artifact>
+</component>
