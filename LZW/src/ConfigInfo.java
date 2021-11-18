@@ -1,11 +1,21 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 
 class ConfigInfo {
+    // 'config field type' enum
+    public enum FieldType {
+        SRC_FILE,
+        DIR_FILE,
+        MODE,
+        MAX_BITS,
+        BUFFER_SIZE
+    }
+
     // config grammar
-    private final static ConfigGrammar grammar = new ConfigGrammar(new String[]{"SRC_FILE", "DIR_FILE", "MAX_BITS", "MODE", "BUFFER_SIZE"});
+    private final static ConfigGrammar grammar = new ConfigGrammar(Arrays.stream(FieldType.values()).map(FieldType::toString).toArray(String[]::new));
     // config values
     private final HashMap<String, String> fieldsValues = new HashMap<>();
 

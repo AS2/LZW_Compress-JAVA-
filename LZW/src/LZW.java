@@ -31,23 +31,6 @@ public class LZW {
         }
     }
 
-    // 'config field type' enum
-    private enum InfoType {
-        srcFile("SRC_FILE"),
-        dirFile("DIR_FILE"),
-        mode("MODE"),
-        maxVocBits("MAX_BITS"),
-        bufferSize("BUFFER_SIZE");
-
-        private final String type;
-        InfoType(String str) {
-            type = str;
-        }
-        String GetType() {
-            return type;
-        }
-    }
-
     // config file
     private final ConfigInfo lzwCi;
 
@@ -409,74 +392,76 @@ public class LZW {
 
         // parse fields
         for (String fieldType : fieldsTypes) {
-            // parse SRC_FILE path
-            if (fieldType.equals(InfoType.srcFile.GetType())) {
-                srcFile = fieldsValues.get(fieldType);
-                if (srcFile == null) {
-                    error.UpdateError(error.ErrorCode.LZW_PROC_ERR, "LE: No 'SRC_FILE' field in conf");
-                    return;
+            switch (ConfigInfo.FieldType.valueOf(fieldType)) {
+                // parse SRC_FILE path
+                case SRC_FILE ->  {
+                    srcFile = fieldsValues.get(fieldType);
+                    if (srcFile == null) {
+                        error.UpdateError(error.ErrorCode.LZW_PROC_ERR, "LE: No 'SRC_FILE' field in conf");
+                        return;
+                    }
                 }
-            }
-            // parse DIR_FILE path
-            if (fieldType.equals(InfoType.dirFile.GetType())) {
-                dirFile = fieldsValues.get(fieldType);
-                if (dirFile == null) {
-                    error.UpdateError(error.ErrorCode.LZW_PROC_ERR, "LE: No 'DIR_FILE' field in conf");
-                    return;
+                // parse DIR_FILE path
+                case DIR_FILE -> {
+                    dirFile = fieldsValues.get(fieldType);
+                    if (dirFile == null) {
+                        error.UpdateError(error.ErrorCode.LZW_PROC_ERR, "LE: No 'DIR_FILE' field in conf");
+                        return;
+                    }
                 }
-            }
-            // parse max vocabulary bits path
-            if (fieldType.equals(InfoType.maxVocBits.GetType())) {
-                String tmpStr = fieldsValues.get(fieldType);
-                if (tmpStr == null) {
-                    error.UpdateError(error.ErrorCode.LZW_PROC_ERR, "LE: No 'MAX_BITS' field in conf");
-                    return;
-                }
-                maxVocSize = ParseStrToInt(tmpStr);
+                // parse max vocabulary bits path
+                case MAX_BITS ->  {
+                    String tmpStr = fieldsValues.get(fieldType);
+                    if (tmpStr == null) {
+                        error.UpdateError(error.ErrorCode.LZW_PROC_ERR, "LE: No 'MAX_BITS' field in conf");
+                        return;
+                    }
+                    maxVocSize = ParseStrToInt(tmpStr);
 
-                if (error.errNo != error.ErrorCode.NO_ERR)
-                    return;
-                // let vocabulary be not very big, but let him store, minimum, 256 symbols
-                if (maxVocSize < 9 || maxVocSize > 31) {
-                    error.UpdateError(error.ErrorCode.LZW_PROC_ERR, "LE: Bits for per word must be between [9; 31]");
-                    return;
+                    if (error.errNo != error.ErrorCode.NO_ERR)
+                        return;
+                    // let vocabulary be not very big, but let him store, minimum, 256 symbols
+                    if (maxVocSize < 9 || maxVocSize > 31) {
+                        error.UpdateError(error.ErrorCode.LZW_PROC_ERR, "LE: Bits for per word must be between [9; 31]");
+                        return;
+                    }
                 }
-            }
-            // parse mode
-            if (fieldType.equals(InfoType.mode.GetType())) {
-                String tmpStr = fieldsValues.get(fieldType);
-                if (tmpStr == null) {
-                    error.UpdateError(error.ErrorCode.LZW_PROC_ERR, "LE: No 'MODE' field in conf");
-                    return;
-                }
-                modeWork = Mode.ToMode(ParseStrToInt((fieldsValues.get("MODE"))));
+                // parse mode
+                case MODE ->  {
+                    String tmpStr = fieldsValues.get(fieldType);
+                    if (tmpStr == null) {
+                        error.UpdateError(error.ErrorCode.LZW_PROC_ERR, "LE: No 'MODE' field in conf");
+                        return;
+                    }
+                    modeWork = Mode.ToMode(ParseStrToInt((fieldsValues.get("MODE"))));
 
-                if (error.errNo != error.ErrorCode.NO_ERR)
-                    return;
-                else if (modeWork != Mode.ENCODE && modeWork != Mode.DECODE) {
-                    error.UpdateError(error.ErrorCode.LZW_PROC_ERR, "LE: Incorrect mode work: 0 - for compress, 1 - for decompress");
-                    return;
+                    if (error.errNo != error.ErrorCode.NO_ERR)
+                        return;
+                    else if (modeWork != Mode.ENCODE && modeWork != Mode.DECODE) {
+                        error.UpdateError(error.ErrorCode.LZW_PROC_ERR, "LE: Incorrect mode work: 0 - for compress, 1 - for decompress");
+                        return;
+                    }
                 }
-            }
-            // parse buffer size
-            if (fieldType.equals(InfoType.bufferSize.GetType())) {
-                String tmpStr = fieldsValues.get(fieldType);
-                if (tmpStr == null) {
-                    error.UpdateError(error.ErrorCode.LZW_PROC_ERR, "LE: No 'BUFFER_SIZE' field in conf");
-                    return;
-                }
-                bufSize = ParseStrToInt(fieldsValues.get("BUFFER_SIZE"));
+                // parse buffer size
+                case BUFFER_SIZE -> {
+                    String tmpStr = fieldsValues.get(fieldType);
+                    if (tmpStr == null) {
+                        error.UpdateError(error.ErrorCode.LZW_PROC_ERR, "LE: No 'BUFFER_SIZE' field in conf");
+                        return;
+                    }
+                    bufSize = ParseStrToInt(fieldsValues.get("BUFFER_SIZE"));
 
-                if (error.errNo != error.ErrorCode.NO_ERR)
-                    return;
-                else if ((double) bufSize < Math.ceil((double) maxVocSize / 8)) {
-                    error.UpdateError(error.ErrorCode.LZW_PROC_ERR, "LE: Buffer size can't fit index to write");
-                    return;
-                }
-                // let buffer to store not more than 1Gb
-                else if (bufSize > MaxBufSize) {
-                    error.UpdateError(error.ErrorCode.LZW_PROC_ERR, "LE: Too big size for buffer");
-                    return;
+                    if (error.errNo != error.ErrorCode.NO_ERR)
+                        return;
+                    else if ((double) bufSize < Math.ceil((double) maxVocSize / 8)) {
+                        error.UpdateError(error.ErrorCode.LZW_PROC_ERR, "LE: Buffer size can't fit index to write");
+                        return;
+                    }
+                    // let buffer to store not more than 1Gb
+                    else if (bufSize > MaxBufSize) {
+                        error.UpdateError(error.ErrorCode.LZW_PROC_ERR, "LE: Too big size for buffer");
+                        return;
+                    }
                 }
             }
         }
