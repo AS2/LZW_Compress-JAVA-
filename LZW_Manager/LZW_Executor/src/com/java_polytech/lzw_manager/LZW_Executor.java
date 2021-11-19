@@ -10,7 +10,9 @@ import java.util.Arrays;
 
 public class LZW_Executor implements IExecutor {
     private static final RC RC_NULL_CONSUMER = new RC(RC.RCWho.EXECUTOR, RC.RCType.CODE_CUSTOM_ERROR, "Executor taken 'null' IConsumer");
-    private LZW_ConfGramAbstract grammar = new LZW_ExGrammar();
+    private static final RC RC_BAD_WORD_INDEX_IN_FILE = new RC(RC.RCWho.EXECUTOR, RC.RCType.CODE_CUSTOM_ERROR, "Decompiler read bad wordIndex - check correct params to decompress");
+
+    private final LZW_ConfGramAbstract grammar = new LZW_ExGrammar();
 
     private enum Mode {
         ENCODE,
@@ -72,27 +74,34 @@ public class LZW_Executor implements IExecutor {
         return RC.RC_SUCCESS;
     }
 
+    private RC ProcessBuffer(byte[] buffer) {
+        byte[] newBytes;
+
+        if (executorMode == Mode.ENCODE)
+            newBytes = LZW_ExProcessor.LZWCompress(buffer);
+        else {
+            newBytes = LZW_ExProcessor.LZWDecompress(buffer);
+            if (newBytes == null && !LZW_ExProcessor.decompressResult)
+                return RC_BAD_WORD_INDEX_IN_FILE;
+        }
+
+        RC consumePipeline = executorComsumer.consume(newBytes);
+        if (!consumePipeline.isSuccess())
+            return consumePipeline;
+
+        return RC.RC_SUCCESS;
+    }
+
     @Override
     public RC consume(byte[] buff) {
         if (buff == null) {
-            byte[] lastBytes;
+            RC rc = ProcessBuffer(remainedData);
+            if (!rc.isSuccess())
+                return rc;
 
-            if (executorMode == Mode.ENCODE)
-                lastBytes = LZW_ExProcessor.LZWCompress(remainedData);
-            else
-                lastBytes = LZW_ExProcessor.LZWDecompress(remainedData);
-            RC sendLastBytes = executorComsumer.consume(lastBytes);
-            if (!sendLastBytes.isSuccess())
-                return sendLastBytes;
-
-            if (executorMode == Mode.ENCODE)
-                lastBytes = LZW_ExProcessor.LZWCompress(null);
-            else
-                lastBytes = LZW_ExProcessor.LZWDecompress(null);
-
-            sendLastBytes = executorComsumer.consume(lastBytes);
-            if (!sendLastBytes.isSuccess())
-                return sendLastBytes;
+            rc = ProcessBuffer(null);
+            if (!rc.isSuccess())
+                return rc;
 
             RC stopPipeline = executorComsumer.consume(null);
             if (!stopPipeline.isSuccess())
@@ -105,18 +114,11 @@ public class LZW_Executor implements IExecutor {
             System.arraycopy(buff, 0, remainedData, remainedDataPart, buff.length);
 
             if (remainedData.length >= minConsumeredBufferSize) {
-                byte[] newBytes;
-
-                if (executorMode == Mode.ENCODE)
-                    newBytes = LZW_ExProcessor.LZWCompress(remainedData);
-                else
-                    newBytes = LZW_ExProcessor.LZWDecompress(remainedData);
+                RC rc = ProcessBuffer(remainedData);
+                if (!rc.isSuccess())
+                    return rc;
 
                 remainedData = new byte[0];
-
-                RC consumePipeline = executorComsumer.consume(newBytes);
-                if (!consumePipeline.isSuccess())
-                    return consumePipeline;
             }
             return RC.RC_SUCCESS;
         }

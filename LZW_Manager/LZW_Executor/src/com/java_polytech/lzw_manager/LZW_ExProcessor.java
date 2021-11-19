@@ -6,7 +6,6 @@ public class LZW_ExProcessor {
     private static boolean wasStarted = false;
     private final static RC LZW_DECOMPRESS_BAD_WORD_INDEX = new RC(RC.RCWho.EXECUTOR, RC.RCType.CODE_CUSTOM_ERROR, "Readen bad word index");
 
-
     static void InitExProcessor(int newMaxVocSize) {
         LZW_ExVocabularyManager.InitVocabulary(newMaxVocSize);
     }
@@ -68,6 +67,8 @@ public class LZW_ExProcessor {
     // LZW decompress function.
     // Arguments: none (used data from global parameters from 'LZW' class)
     // Returns: none.
+    public static boolean decompressResult;
+
     static public byte[] LZWDecompress(byte[] data) {
         int wordIndex, searchRes;
         byte[] wordToAdd;
@@ -83,20 +84,30 @@ public class LZW_ExProcessor {
         if (!LZW_ExBufferReaderManager.isBufferEnded() && !wasStarted) {
             wordIndex = LZW_ExBufferReaderManager.ReadNBits(LZW_ExVocabularyManager.currentVocabularyBits);
             LZW_ExVocabularyManager.wordSpacePos = 0;
+            //if read bad word index -> leave with error status
+            if (wordIndex < 0 || wordIndex > LZW_ExVocabularyManager.lastNewWordIndex) {
+                decompressResult = false;
+                return null;
+            }
+            // add word in 'sandbox' array
             LZW_ExVocabularyManager.AddWordToWordSpace(LZW_ExVocabularyManager.vocabulary[wordIndex].wordInBytes);
             wasStarted = true;
         }
 
         // read new symbols
         while (!LZW_ExBufferReaderManager.isBufferEnded()) {
+            // if trying read N bits on last iteration ended with no error -> read all N bits again
             if (LZW_ExBufferReaderManager.READNBITS_RESULT == LZW_ExBufferReaderManager.READNBITS_RESULT_TYPE.COMPLETED)
                 wordIndex = LZW_ExBufferReaderManager.ReadNBits(LZW_ExVocabularyManager.currentVocabularyBits);
+            // if trying read N bits on last iteration ended with error -> read only remained part from new buffer
             else
                 wordIndex = LZW_ExBufferReaderManager.ReadRemainedPart();
 
+            // if trying read N bits on last function call ended with error -> save result and leave 'while' loop
             if (LZW_ExBufferReaderManager.READNBITS_RESULT == LZW_ExBufferReaderManager.READNBITS_RESULT_TYPE.NOT_COMPLETED)
                 break;
 
+            // if unknown word -> make usual algorithm: try to add new letter to word, if exist -> continue searching, if not -> write word and read new index
             if (wordIndex < LZW_ExVocabularyManager.lastNewWordIndex) {
                 LZW_ExVocabularyManager.AddByteToWordSpace(LZW_ExVocabularyManager.vocabulary[wordIndex].wordInBytes[0]);
                 searchRes = LZW_ExVocabularyManager.IsVocContainThisWord(LZW_ExVocabularyManager.wordSpace, LZW_ExVocabularyManager.wordSpacePos);
@@ -130,8 +141,14 @@ public class LZW_ExProcessor {
                 LZW_ExVocabularyManager.wordSpacePos = 0;
                 LZW_ExVocabularyManager.AddWordToWordSpace(LZW_ExVocabularyManager.vocabulary[wordIndex].wordInBytes);
             }
+            // then code incorrect -> leave with error
+            else {
+                decompressResult = false;
+                return null;
+            }
         }
 
+        decompressResult = true;
         return LZW_ExBufferWriterManager.SendBufferToConsumer();
     }
 }

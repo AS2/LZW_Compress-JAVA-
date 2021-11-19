@@ -71,7 +71,7 @@ public class LZW_Reader implements IReader {
 
     @Override
     public RC run() {
-        byte[] byteToConsumer = new byte[bufferSize];
+        byte[] byteToConsumer;
         byte[] bytesTmp = new byte[bufferSize];
         int readenPart;
 

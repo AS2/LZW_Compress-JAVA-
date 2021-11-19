@@ -383,6 +383,7 @@ public class LZW {
     private void LZWParseConfig() {
         HashMap<String, String> fieldsValues = lzwCi.GetFieldValues();
         String[] fieldsTypes = lzwCi.GetFieldTypes();
+        String tmpStr;
 
         // check how many fields are fill
         if (fieldsValues.size() != 5) {
@@ -394,24 +395,24 @@ public class LZW {
         for (String fieldType : fieldsTypes) {
             switch (ConfigInfo.FieldType.valueOf(fieldType)) {
                 // parse SRC_FILE path
-                case SRC_FILE ->  {
+                case SRC_FILE:
                     srcFile = fieldsValues.get(fieldType);
                     if (srcFile == null) {
                         error.UpdateError(error.ErrorCode.LZW_PROC_ERR, "LE: No 'SRC_FILE' field in conf");
                         return;
                     }
-                }
+                    break;
                 // parse DIR_FILE path
-                case DIR_FILE -> {
+                case DIR_FILE:
                     dirFile = fieldsValues.get(fieldType);
                     if (dirFile == null) {
                         error.UpdateError(error.ErrorCode.LZW_PROC_ERR, "LE: No 'DIR_FILE' field in conf");
                         return;
                     }
-                }
+                    break;
                 // parse max vocabulary bits path
-                case MAX_BITS ->  {
-                    String tmpStr = fieldsValues.get(fieldType);
+                case MAX_BITS:
+                    tmpStr = fieldsValues.get(fieldType);
                     if (tmpStr == null) {
                         error.UpdateError(error.ErrorCode.LZW_PROC_ERR, "LE: No 'MAX_BITS' field in conf");
                         return;
@@ -425,10 +426,10 @@ public class LZW {
                         error.UpdateError(error.ErrorCode.LZW_PROC_ERR, "LE: Bits for per word must be between [9; 31]");
                         return;
                     }
-                }
+                    break;
                 // parse mode
-                case MODE ->  {
-                    String tmpStr = fieldsValues.get(fieldType);
+                case MODE:
+                    tmpStr = fieldsValues.get(fieldType);
                     if (tmpStr == null) {
                         error.UpdateError(error.ErrorCode.LZW_PROC_ERR, "LE: No 'MODE' field in conf");
                         return;
@@ -441,10 +442,10 @@ public class LZW {
                         error.UpdateError(error.ErrorCode.LZW_PROC_ERR, "LE: Incorrect mode work: 0 - for compress, 1 - for decompress");
                         return;
                     }
-                }
+                    break;
                 // parse buffer size
-                case BUFFER_SIZE -> {
-                    String tmpStr = fieldsValues.get(fieldType);
+                case BUFFER_SIZE:
+                    tmpStr = fieldsValues.get(fieldType);
                     if (tmpStr == null) {
                         error.UpdateError(error.ErrorCode.LZW_PROC_ERR, "LE: No 'BUFFER_SIZE' field in conf");
                         return;
@@ -462,7 +463,7 @@ public class LZW {
                         error.UpdateError(error.ErrorCode.LZW_PROC_ERR, "LE: Too big size for buffer");
                         return;
                     }
-                }
+                    break;
             }
         }
     }

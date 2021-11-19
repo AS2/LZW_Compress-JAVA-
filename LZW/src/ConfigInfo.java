@@ -21,16 +21,14 @@ class ConfigInfo {
 
     // Config info constructor
     public ConfigInfo(String configPath) {
-        int isFieldTypeRecognized;
-
         try (FileReader fr = new FileReader(configPath)) {
             BufferedReader br = new BufferedReader(fr);
 
             // read lines and save them
             String line;
             while ((line = br.readLine()) != null) {
-                String[] stringComponents = line.split(grammar.splitSymbol);
-                if (stringComponents.length != grammar.fieldsPerLine) {
+                String[] stringComponents = line.split(ConfigGrammar.splitSymbol);
+                if (stringComponents.length != ConfigGrammar.fieldsPerLine) {
                     error.UpdateError(error.ErrorCode.CONF_ERR, "LE: Bad config parameter line");
                     return;
                 }
@@ -38,15 +36,13 @@ class ConfigInfo {
                     // delete all possibles spaces
                     stringComponents[0] = stringComponents[0].replaceAll(" ", "");
                     stringComponents[1] = stringComponents[1].replaceAll(" ", "");
-                    isFieldTypeRecognized = 0;
 
-                    for (String fieldValue : grammar.fieldsTypes)
-                        if (fieldValue.equals(stringComponents[0])) {
-                            isFieldTypeRecognized = 1;
-                            break;
-                        }
+                    if (stringComponents[0].isEmpty() || stringComponents[1].isEmpty())  {
+                        error.UpdateError(error.ErrorCode.CONF_ERR, "LE: some config's stroke is empty");
+                        return;
+                    }
 
-                    if (isFieldTypeRecognized != 1) {
+                    if (!Arrays.asList(grammar.fieldsTypes).contains(stringComponents[0])) {
                         error.UpdateError(error.ErrorCode.CONF_ERR, "LE: Unrecognized config parameter type '" + stringComponents[0] + "'");
                         return;
                     }
