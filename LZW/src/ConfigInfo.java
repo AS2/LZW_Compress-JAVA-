@@ -15,7 +15,16 @@ class ConfigInfo {
     }
 
     // config grammar
-    private final static ConfigGrammar grammar = new ConfigGrammar(Arrays.stream(FieldType.values()).map(FieldType::toString).toArray(String[]::new));
+    private final static ConfigGrammar grammar;
+    static {
+        String[] fieldsTypesArray = new String[FieldType.values().length];
+        int i = 0;
+        for (Object fieldType : FieldType.values()) {
+            fieldsTypesArray[i++] = fieldType.toString();
+        }
+        grammar = new ConfigGrammar(fieldsTypesArray);
+    }
+
     // config values
     private final HashMap<String, String> fieldsValues = new HashMap<>();
 
