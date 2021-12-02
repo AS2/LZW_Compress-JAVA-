@@ -7,6 +7,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="module" module-name="LZW_Common" exported="" />
+    <orderEntry type="library" exported="" name="artefacts" level="project" />
     <orderEntry type="library" exported="" name="libs" level="project" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>

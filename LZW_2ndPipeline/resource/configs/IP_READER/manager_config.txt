@@ -1,0 +1,8 @@
+SRC_FILE = resource/res/orwell.txt
+DIR_FILE = resource/res/reparsered_orwell.txt
+READER_CLASS=Reader
+EXECUTOR_CLASSES = com.java_polytech.lzw_manager.LZW_Executor
+WRITER_CLASS = com.java_polytech.lzw_manager.LZW_Writer
+EXECUTOR_CONFIGS = resource/configs/IP_READER/executor_config.txt
+READER_CONFIG = resource/configs/IP_READER/reader_config.txt
+WRITER_CONFIG = resource/configs/IP_READER/writer_config.txt

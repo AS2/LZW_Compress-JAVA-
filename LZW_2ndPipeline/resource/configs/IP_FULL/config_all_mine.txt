@@ -1,0 +1,8 @@
+INPUT_FILE=message.txt
+OUTPUT_FILE=tmp.txt
+READER_NAME=Reader
+WRITER_NAME=Writer
+EXECUTOR_NAME=Executor
+READER_CONFIG_FILE=resource/configs/IP_FULL/my_configs/reader_config.txt
+WRITER_CONFIG_FILE=resource/configs/IP_FULL/my_configs/writer_config.txt
+EXECUTOR_CONFIG_FILE=resource/configs/IP_FULL/my_configs/executor_config.txt

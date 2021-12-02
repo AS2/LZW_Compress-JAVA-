@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/LZW_Common/LZW_Common.iml" filepath="$PROJECT_DIR$/LZW_Common/LZW_Common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LZW_Executor/LZW_Executor.iml" filepath="$PROJECT_DIR$/LZW_Executor/LZW_Executor.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LZW_Manager.iml" filepath="$PROJECT_DIR$/LZW_Manager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LZW_Reader/LZW_Reader.iml" filepath="$PROJECT_DIR$/LZW_Reader/LZW_Reader.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LZW_Writer/LZW_Writer.iml" filepath="$PROJECT_DIR$/LZW_Writer/LZW_Writer.iml" />
+    </modules>
+  </component>
+</project>

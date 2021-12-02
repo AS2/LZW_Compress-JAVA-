@@ -1,0 +1,2 @@
+дек 02, 2021 8:39:40 PM com.java_polytech.lzw_manager.LZW_Manager Run
+SEVERE: LZW Manager start working
