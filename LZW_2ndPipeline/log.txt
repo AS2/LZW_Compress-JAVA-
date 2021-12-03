@@ -1,4 +1,4 @@
-дек 03, 2021 9:56:31 PM com.java_polytech.lzw_manager.LZW_Manager Run
+дек 03, 2021 11:26:26 PM LZW_Manager Run
 SEVERE: LZW Manager start working
-дек 03, 2021 9:56:36 PM com.java_polytech.lzw_manager.LZW_Manager Run
+дек 03, 2021 11:26:31 PM LZW_Manager Run
 SEVERE: LZW Manager complete working process successful

@@ -1,5 +1,3 @@
-package com.java_polytech.lzw_manager;
-
 import com.java_polytech.pipeline_interfaces.RC;
 
 public class LZW_ExProcessor {

@@ -1,13 +1,9 @@
-package com.java_polytech.lzw_manager;
-
-import com.java_polytech.lzw_manager.LZW_Config;
 import com.java_polytech.pipeline_interfaces.*;
 
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.IntBuffer;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class LZW_Writer implements IWriter {

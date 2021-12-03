@@ -1,7 +1,7 @@
 SRC_FILE = resource/res/encode_orwell_with_IP_WRITER.txt
 DIR_FILE = resource/res/decode_orwell_with_IP_WRITER.txt
-READER_CLASS=com.java_polytech.lzw_manager.LZW_Reader
-EXECUTOR_CLASSES = com.java_polytech.lzw_manager.LZW_Executor
+READER_CLASS=LZW_Reader
+EXECUTOR_CLASSES = LZW_Executor
 WRITER_CLASS = Writer
 EXECUTOR_CONFIGS = resource/configs/IP_WRITER/executor_config.txt
 READER_CONFIG = resource/configs/IP_WRITER/reader_config.txt

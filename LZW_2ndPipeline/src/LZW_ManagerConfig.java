@@ -1,5 +1,3 @@
-package com.java_polytech.lzw_manager;
-
 import java.util.Arrays;
 
 public class LZW_ManagerConfig extends LZW_ConfGramAbstract {

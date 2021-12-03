@@ -1,8 +1,8 @@
 SRC_FILE = resource/res/orwell.txt
 DIR_FILE = resource/res/double_parsered_orwell.txt
-READER_CLASS = com.java_polytech.lzw_manager.LZW_Reader
-EXECUTOR_CLASSES = com.java_polytech.lzw_manager.LZW_Executor, com.java_polytech.lzw_manager.LZW_Executor
-WRITER_CLASS = com.java_polytech.lzw_manager.LZW_Writer
+READER_CLASS = LZW_Reader
+EXECUTOR_CLASSES = LZW_Executor, LZW_Executor
+WRITER_CLASS = LZW_Writer
 EXECUTOR_CONFIGS = resource/configs/My_FULL_2Ex/executor_encode_config.txt, resource/configs/My_FULL_2Ex/executor_decode_config.txt
 READER_CONFIG = resource/configs/My_FULL_2Ex/reader_config.txt
 WRITER_CONFIG = resource/configs/My_FULL_2Ex/writer_config.txt

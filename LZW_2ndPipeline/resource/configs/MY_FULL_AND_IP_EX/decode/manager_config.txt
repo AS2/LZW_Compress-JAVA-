@@ -1,8 +1,8 @@
 SRC_FILE = resource/res/mixed_encode.txt
 DIR_FILE = resource/res/mixed_decode.txt
-READER_CLASS=com.java_polytech.lzw_manager.LZW_Reader
-EXECUTOR_CLASSES = Decoder, com.java_polytech.lzw_manager.LZW_Executor
-WRITER_CLASS = com.java_polytech.lzw_manager.LZW_Writer
+READER_CLASS=LZW_Reader
+EXECUTOR_CLASSES = Decoder, LZW_Executor
+WRITER_CLASS = LZW_Writer
 EXECUTOR_CONFIGS = resource/configs/MY_FULL_AND_IP_EX/decode/ip_executor_config.txt, resource/configs/MY_FULL_AND_IP_EX/decode/lzw_executor_config.txt
 READER_CONFIG = resource/configs/MY_FULL_AND_IP_EX/decode/reader_config.txt
 WRITER_CONFIG = resource/configs/MY_FULL_AND_IP_EX/decode/writer_config.txt
