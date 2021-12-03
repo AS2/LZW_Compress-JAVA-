@@ -3,7 +3,7 @@
     <output-path>$PROJECT_DIR$/artefacts</output-path>
     <root id="archive" name="LZW_Writer.jar">
       <element id="module-output" name="LZW_Writer" />
-      <element id="artifact" artifact-name="LZW_Common" />
+      <element id="module-output" name="LZW_Common" />
     </root>
   </artifact>
 </component>

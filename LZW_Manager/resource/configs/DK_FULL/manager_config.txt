@@ -1,0 +1,8 @@
+SRC_FILE = resource/res/encode_dk1.txt
+DIR_FILE = resource/res/decode_dk1.txt
+READER_CLASS = Reader
+EXECUTOR_CLASS = Executor
+WRITER_CLASS = Writer
+EXECUTOR_CONFIG = resource/configs/DK_FULL/executor_config.txt
+READER_CONFIG = resource/configs/DK_FULL/reader_config.txt
+WRITER_CONFIG = resource/configs/DK_FULL/writer_config.txt

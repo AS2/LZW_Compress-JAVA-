@@ -59,6 +59,7 @@ public class LZW_ExVocabularyManager {
             vocabulary[i] = new wordStruct(byteCode);
         }
 
+        wordSpaceLength = DEFAULT_MAX_ARR_SIZE;
         wordSpace = new byte[DEFAULT_MAX_ARR_SIZE];
 
         currentVocabularyBits = 9;

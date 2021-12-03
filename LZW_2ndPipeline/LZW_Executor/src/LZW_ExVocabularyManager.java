@@ -3,35 +3,35 @@ import java.util.Arrays;
 public class LZW_ExVocabularyManager {
     final static private int DEFAULT_MAX_ARR_SIZE = 100;
 
+    // Convert "unsigned" char to int method
+    // Args: - Byte - Byte to parse
+    // Return: int - parsed Byte
+    private int ConvertToInt(byte Byte) {
+        if (Byte < 0)
+            return (int)(Byte) + 256;
+        else
+            return (Byte);
+    }
+
+    int CountArrHash(byte[] arr, int arrLength) {
+        int res = 0, cnt = 0;
+
+        for (int i = arrLength - 1; i >= 0 & cnt < 4; i--) {
+            res = (res << 8) | ConvertToInt(arr[i]);
+            cnt++;
+        }
+
+        return res;
+    }
+
     // vocabulary parameters
-    public static class wordStruct {
+    public class wordStruct {
         byte[] wordInBytes;
         int wordHash;
-
-        // Convert "unsigned" char to int method
-        // Args: - Byte - Byte to parse
-        // Return: int - parsed Byte
-        private static int ConvertToInt(byte Byte) {
-            if (Byte < 0)
-                return (int)(Byte) + 256;
-            else
-                return (Byte);
-        }
 
         wordStruct(byte[] newWordInBytes) {
             wordInBytes = newWordInBytes;
             wordHash = CountArrHash(wordInBytes, wordInBytes.length);
-        }
-
-        static int CountArrHash(byte[] arr, int arrLength) {
-            int res = 0, cnt = 0;
-
-            for (int i = arrLength - 1; i >= 0 & cnt < 4; i--) {
-                res = (res << 8) | ConvertToInt(arr[i]);
-                cnt++;
-            }
-
-            return res;
         }
     }
 
@@ -57,6 +57,7 @@ public class LZW_ExVocabularyManager {
             vocabulary[i] = new wordStruct(byteCode);
         }
 
+        wordSpaceLength = DEFAULT_MAX_ARR_SIZE;
         wordSpace = new byte[DEFAULT_MAX_ARR_SIZE];
 
         currentVocabularyBits = 9;
@@ -86,7 +87,7 @@ public class LZW_ExVocabularyManager {
     // Arguments: byte[] word - word to find
     // Returns: int - '-1' if voc doesn't contain word, not negative number - word index
     public int IsVocContainThisWord(byte[] word, int wordLength) {
-        int wordHash = wordStruct.CountArrHash(word, wordLength);
+        int wordHash = CountArrHash(word, wordLength);
 
         if (wordLength == 1) {
             for (int i = 0; i < 256; i++)
@@ -137,11 +138,11 @@ public class LZW_ExVocabularyManager {
     // Arguments: byte[] word - word to add
     // Returns: none
     public void AddByteToWordSpace(byte newByte) {
-        wordSpace[wordSpacePos++] = newByte;
         if (wordSpacePos == wordSpaceLength) {
             wordSpaceLength *= 2;
             wordSpace = Arrays.copyOf(wordSpace, wordSpaceLength);
         }
+        wordSpace[wordSpacePos++] = newByte;
     }
 
     // Add word to vocabulary in decompress type work

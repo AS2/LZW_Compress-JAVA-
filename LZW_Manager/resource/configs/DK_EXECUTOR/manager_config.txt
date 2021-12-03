@@ -1,0 +1,8 @@
+SRC_FILE = resource/res/encode_dk1.txt
+DIR_FILE = resource/res/decode_dk1.txt
+READER_CLASS = com.java_polytech.lzw_manager.LZW_Reader
+EXECUTOR_CLASS = Executor
+WRITER_CLASS = com.java_polytech.lzw_manager.LZW_Writer
+EXECUTOR_CONFIG = resource/configs/DK_EXECUTOR/executor_config.txt
+READER_CONFIG = resource/configs/DK_EXECUTOR/reader_config.txt
+WRITER_CONFIG = resource/configs/DK_EXECUTOR/writer_config.txt
