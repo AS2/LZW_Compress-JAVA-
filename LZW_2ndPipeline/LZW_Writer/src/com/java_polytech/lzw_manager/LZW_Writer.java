@@ -5,6 +5,7 @@ import com.java_polytech.pipeline_interfaces.*;
 
 import java.io.*;
 import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
 import java.nio.IntBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -99,16 +100,19 @@ public class LZW_Writer implements IWriter {
         return RC.RC_SUCCESS;
     }
 
-    // TODO : WRITE
+
     private byte[] GetTransformedData() {
         if (currentType == TYPE.BYTE_ARRAY)
             return (byte[])mediator.getData();
         else if (currentType == TYPE.CHAR_ARRAY) {
-            char[] charTmp = (char[]) mediator.getData();
+            char[] charTmp = (char[])mediator.getData();
             if (charTmp == null)
                 return null;
 
-            return new String(charTmp).getBytes(StandardCharsets.UTF_8);
+            ByteBuffer bytes = ByteBuffer.allocate(charTmp.length * 4);
+            CharBuffer chars = bytes.asCharBuffer();
+            chars.put(charTmp);
+            return bytes.array();
         }
         else if (currentType == TYPE.INT_ARRAY) {
             int[] intTmp = (int[])mediator.getData();

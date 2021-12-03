@@ -1,5 +1,5 @@
-SRC_FILE = resource/res/orwell.txt
-DIR_FILE = resource/res/encode_orwell.txt
+SRC_FILE = resource/res/encode_orwell_1Ex.txt
+DIR_FILE = resource/res/decode_orwell_1Ex.txt
 READER_CLASS = com.java_polytech.lzw_manager.LZW_Reader
 EXECUTOR_CLASSES = com.java_polytech.lzw_manager.LZW_Executor
 WRITER_CLASS = com.java_polytech.lzw_manager.LZW_Writer

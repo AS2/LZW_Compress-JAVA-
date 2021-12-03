@@ -4,6 +4,10 @@ import com.java_polytech.pipeline_interfaces.*;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.CharBuffer;
+import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -16,7 +20,7 @@ public class LZW_Executor implements IExecutor {
 
 
     private final LZW_ConfGramAbstract grammar = new LZW_ExGrammar();
-    //private final TYPE[] supportedTypes = {TYPE.BYTE_ARRAY, TYPE.CHAR_ARRAY};
+    //private final TYPE[] supportedTypes = {TYPE.CHAR_ARRAY, TYPE.BYTE_ARRAY};
     private final TYPE[] supportedTypes = {TYPE.BYTE_ARRAY};
     private TYPE currentType = null;
 
@@ -49,6 +53,26 @@ public class LZW_Executor implements IExecutor {
             return dataToSend;
         }
     }
+
+    /*
+    private class CharBufferMediator implements IMediator {
+        @Override
+        public Object getData() {
+            if (bufferOutSize < 0)
+                return null;
+
+            assert (bufferOutSize % 2) == 0;
+            byte[] dataTmp = new byte[bufferOutSize];
+            System.arraycopy(bufferOut, 0, dataTmp, 0, bufferOutSize);
+            CharBuffer charBuf = ByteBuffer.wrap(dataTmp)
+                    .order(ByteOrder.BIG_ENDIAN)
+                    .asCharBuffer();
+            char[] dataToSend = new char[charBuf.remaining()];
+            charBuf.get(dataToSend);
+            return dataToSend;
+        }
+    }
+     */
 
     @Override
     public RC setConfig(String cfgFileName) {
@@ -174,9 +198,26 @@ public class LZW_Executor implements IExecutor {
         return RC.RC_SUCCESS;
     }
 
+    private byte[] GetTransformedData() {
+        if (currentType == TYPE.BYTE_ARRAY)
+            return (byte[])mediator.getData();
+        /*else if (currentType == TYPE.CHAR_ARRAY) {
+            char[] charTmp = (char[])mediator.getData();
+            if (charTmp == null)
+                return null;
+
+            ByteBuffer bytes = ByteBuffer.allocate(charTmp.length * 2);
+            CharBuffer chars = bytes.asCharBuffer();
+            chars.put(charTmp);
+            return bytes.array();
+        }*/
+        else
+            return null;
+    }
+
     @Override
     public RC consume() {
-        byte[] buff = (byte[])mediator.getData();
+        byte[] buff = GetTransformedData();
 
         if (buff == null) {
             RC rc = ProcessBuffer(remainedData);

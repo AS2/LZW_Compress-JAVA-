@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.CharBuffer;
 import java.nio.IntBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -48,8 +49,12 @@ public class LZW_Reader implements IReader {
 
             byte[] dataTmp = new byte[readedSize];
             System.arraycopy(buffer, 0, dataTmp, 0, readedSize);
-            String strTmp = new String(dataTmp, StandardCharsets.UTF_8);
-            return strTmp.toCharArray();
+            CharBuffer charBuf = ByteBuffer.wrap(dataTmp)
+                    .order(ByteOrder.BIG_ENDIAN)
+                    .asCharBuffer();
+            char[] dataToSend = new char[charBuf.remaining()];
+            charBuf.get(dataToSend);
+            return dataToSend;
         }
     }
 
