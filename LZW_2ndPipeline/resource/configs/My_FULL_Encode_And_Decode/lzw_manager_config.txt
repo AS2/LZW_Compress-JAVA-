@@ -1,0 +1,34 @@
+# COMMENTS STARTS WITH '#' SYMBOL
+                  # OR WITH SOME SPACES IN BEGIN
+        # OR MAYBE '/t'
+
+# ---------------------------------------
+# CONFIG RULES:
+# 1) MANAGER CONFIG MUST HAVE NEXT FIELDS:
+#           - SRC_FILE - path to source file (must exist than program starts)
+#           - DIR_FILE - path to result file (can be created, if it doesn't exist)
+#           - LOG_PATH - path to program log (can be created, if it doesn't exist)
+#           - READER_CLASS - Name of reader module (class)
+#           - EXECUTOR_CLASSES - Names of executors modules (classes)
+#           - WRITER_CLASS - Name of writer module (class)
+#           - EXECUTOR_CONFIGS - Paths of executors modules (classes) configs
+#           - READER_CONFIG - Paths of reader module (class) config
+#           - WRITER_CONFIG - Paths of writer module (class) config
+
+# 2) EXECUTOR'S NAMES ORDER SETS IMPLICITY, SEPARATED BY COMMAS.
+# 3) EXECUTOR'S CONFIGS PATHS SETS IN THE SAME WAY, LIKE ORDER TO EXECUTOR'S NAMES
+
+# ----------------------------------------
+# REALISATION:
+
+        SRC_FILE =          resource/res/orwell.txt
+
+LOG_PATH =               resource/log.txt
+
+DIR_FILE = resource/res/double_parsered_orwell.txt
+READER_CLASS = LZW_Reader
+EXECUTOR_CLASSES = LZW_Executor, LZW_Executor
+WRITER_CLASS = LZW_Writer
+EXECUTOR_CONFIGS = resource/configs/My_FULL_Encode_And_Decode/lzw_executor_encode_config.txt, resource/configs/My_FULL_Encode_And_Decode/lzw_executor_decode_config.txt
+READER_CONFIG = resource/configs/My_FULL_Encode_And_Decode/lzw_reader_config.txt
+WRITER_CONFIG = resource/configs/My_FULL_Encode_And_Decode/lzw_writer_config.txt

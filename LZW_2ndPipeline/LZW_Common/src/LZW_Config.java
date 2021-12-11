@@ -1,6 +1,7 @@
 import com.java_polytech.pipeline_interfaces.RC;
 
 import java.io.FileReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -18,6 +19,20 @@ public class LZW_Config {
         grammar = newGrammar;
     }
 
+    private boolean isEmptyStr(String str) {
+        str = str.trim();
+        return str.isEmpty();
+    }
+
+    private boolean isComment(String str) {
+        str = str.trim();
+        return str.length() >= 1 && str.getBytes(StandardCharsets.UTF_8)[0] == LZW_ConfGramAbstract.commentSymbol;
+    }
+
+    private String clearAllPossibleSpaces(String str) {
+        return str.trim().replaceAll(" ", "");
+    }
+
     RC Parse(FileReader configFile) {
         Scanner sc = new Scanner(configFile);
         String line;
@@ -26,13 +41,16 @@ public class LZW_Config {
         while (sc.hasNext()) {
             line = sc.nextLine();
 
+            if (isEmptyStr(line) || isComment(line))
+                continue;
+
             String[] stringComponents = line.split(LZW_ConfGramAbstract.fieldsSplitSymbol);
             if (stringComponents.length != LZW_ConfGramAbstract.fieldsPerLine)
                 return RC_BAD_CONFIG_STRING_SYNTAX;
             else {
                 // delete all possibles spaces
-                stringComponents[0] = stringComponents[0].replaceAll(" ", "");
-                stringComponents[1] = stringComponents[1].replaceAll(" ", "");
+                stringComponents[0] = clearAllPossibleSpaces(stringComponents[0]);
+                stringComponents[1] = clearAllPossibleSpaces(stringComponents[1]);
 
                 if (stringComponents[0].isEmpty() || stringComponents[1].isEmpty())
                     return RC_BAD_CONFIG_STRING_CONTAIN;

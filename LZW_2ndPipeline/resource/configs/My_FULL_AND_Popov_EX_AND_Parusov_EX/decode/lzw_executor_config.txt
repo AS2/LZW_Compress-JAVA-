@@ -1,0 +1,15 @@
+# COMMENTS STARTS WITH '#' SYMBOL
+                  # OR WITH SOME SPACES IN BEGIN
+        # OR MAYBE '/t'
+
+# ---------------------------------------
+# CONFIG EXECUTOR RULES:
+# 1) EXECUTOR CONFIG MUST HAVE NEXT FIELDS:
+#           - EXECUTOR_MODE - executor work type (can be only ENCODE or DECODE)
+#           - MAX_BITS - maximum each word indexes size in bits (can be > 9 and <= 32)
+
+# ----------------------------------------
+# REALISATION:
+
+    EXECUTOR_MODE    =   DECODE
+MAX_BITS = 21

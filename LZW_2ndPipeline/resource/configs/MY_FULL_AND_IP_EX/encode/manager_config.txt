@@ -1,8 +1,0 @@
-SRC_FILE = resource/res/orwell.txt
-DIR_FILE = resource/res/mixed_encode.txt
-READER_CLASS=LZW_Reader
-EXECUTOR_CLASSES = LZW_Executor, Encoder
-WRITER_CLASS = LZW_Writer
-EXECUTOR_CONFIGS = resource/configs/MY_FULL_AND_IP_EX/encode/lzw_executor_config.txt, resource/configs/MY_FULL_AND_IP_EX/encode/ip_executor_config.txt
-READER_CONFIG = resource/configs/MY_FULL_AND_IP_EX/encode/reader_config.txt
-WRITER_CONFIG = resource/configs/MY_FULL_AND_IP_EX/encode/writer_config.txt

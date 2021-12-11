@@ -1,1 +1,0 @@
-TABLE_PATH = resource/configs/MY_FULL_AND_IP_EX/decode/substitution_table.txt

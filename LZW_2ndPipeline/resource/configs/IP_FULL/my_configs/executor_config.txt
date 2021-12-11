@@ -1,2 +1,0 @@
-ACTION=DECODE
-TABLE_PATH=resource/configs/IP_FULL/my_configs/substitution_table.txt

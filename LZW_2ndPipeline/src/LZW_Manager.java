@@ -13,6 +13,7 @@ public class LZW_Manager {
     private final static RC RC_CLOSE_STREAM_ERR = new RC(RC.RCWho.MANAGER, RC.RCType.CODE_CUSTOM_ERROR, "Can't close stream");
     private final static RC RC_MANAGER_CONFIG_FIELD_LOTS_ARGS = new RC(RC.RCWho.MANAGER, RC.RCType.CODE_CUSTOM_ERROR, "Some field in 'LZW_Manager' config, which must have 1 argument, has more than 1 argument");
     private final static RC RC_MANAGER_CONFIG_DIFFERENT_EXECUTORS_PARAMS_SIZES = new RC(RC.RCWho.MANAGER, RC.RCType.CODE_CUSTOM_ERROR, "Different count of executors anr their configs : Some executors doesn't have config paths or there is too much config paths");
+    private final static RC RC_LOGGER_DONT_INIT_PATH = new RC(RC.RCWho.MANAGER, RC.RCType.CODE_CUSTOM_ERROR, "No path to logger");
     private final static RC RC_LOGGER_INIT_FAILURE = new RC(RC.RCWho.MANAGER, RC.RCType.CODE_CUSTOM_ERROR, "Can't init logger");
 
     private final LZW_ConfGramAbstract grammar = new LZW_ManagerConfig();
@@ -25,8 +26,8 @@ public class LZW_Manager {
     private ArrayList<String> executorConfigsPaths;
     private String writerClassName;
     private String writerConfigPath;
+    private String loggerFileName;
 
-    private final static String loggerFileName = "log.txt";
     private Logger logger;
 
     private RC ParseConfig(String configPath) {
@@ -58,6 +59,13 @@ public class LZW_Manager {
         else if (dirFilePathArray.size() != 1)
             return RC_MANAGER_CONFIG_FIELD_LOTS_ARGS;
         dirFilePath = dirFilePathArray.get(0);
+
+        ArrayList<String> loggerPathArray = config.GetValue(LZW_ManagerConfig.LZW_ManagerConfFields.LOG_PATH.toString());
+        if (loggerPathArray == null)
+            return RC_LOGGER_DONT_INIT_PATH;
+        else if (loggerPathArray.size() != 1)
+            return RC_MANAGER_CONFIG_FIELD_LOTS_ARGS;
+        loggerFileName = loggerPathArray.get(0);
 
         // READ CLASSES NAMES
         // Reader
@@ -274,27 +282,27 @@ public class LZW_Manager {
     }
 
     public RC Run(String[] args) {
+        System.out.println("LZW Manager start working");
+        if (args.length != 1) {
+            System.out.println("ERROR : " + RC_MANAGER_BAD_ARGS_COUNT.info);
+            return RC_MANAGER_BAD_ARGS_COUNT;
+        }
+
+        RC configRC = ParseConfig(args[0]);
+        if (!configRC.isSuccess()) {
+            System.out.println("ERROR : " + configRC.info + " " + configRC.type);
+            return configRC;
+        }
+
         RC initLogger = InitLogger();
         if (!initLogger.isSuccess()) {
             System.out.println("Cant init logger");
             return initLogger;
         }
 
-        System.out.println("LZW Manager start working");
-        logger.severe("LZW Manager start working");
-        if (args.length != 1) {
-            logger.severe("ERROR : " + RC_MANAGER_BAD_ARGS_COUNT.info);
-            return RC_MANAGER_BAD_ARGS_COUNT;
-        }
-
-        RC configRC = ParseConfig(args[0]);
-        if (!configRC.isSuccess()) {
-            logger.severe("ERROR : " + configRC.info);
-            return configRC;
-        }
-
         RC pipelineRC = BuildPipeline();
         if (!pipelineRC.isSuccess()) {
+            System.out.println("Something goes wrong. Check 'log' file.");
             logger.severe("ERROR : " + pipelineRC.info);
             return pipelineRC;
         }

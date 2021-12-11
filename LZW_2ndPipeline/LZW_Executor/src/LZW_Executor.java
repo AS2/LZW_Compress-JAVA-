@@ -13,12 +13,10 @@ public class LZW_Executor implements IExecutor {
     private static final RC RC_NULL_CONSUMER = new RC(RC.RCWho.EXECUTOR, RC.RCType.CODE_CUSTOM_ERROR, "Executor taken 'null' IConsumer");
     private static final RC RC_NULL_PROVIDER = new RC(RC.RCWho.EXECUTOR, RC.RCType.CODE_CUSTOM_ERROR, "Executor taken 'null' IProvider");
     private static final RC RC_EMPTY_SAME_TYPES_SET = new RC(RC.RCWho.EXECUTOR, RC.RCType.CODE_CUSTOM_ERROR, "IProvider and LZW_Executor don't have same supported times");
-    private static final RC RC_BAD_WORD_INDEX_IN_FILE = new RC(RC.RCWho.EXECUTOR, RC.RCType.CODE_CUSTOM_ERROR, "Decompiler read bad wordIndex - check correct params to decompress");
+    private static final RC RC_BAD_WORD_INDEX_IN_FILE = new RC(RC.RCWho.EXECUTOR, RC.RCType.CODE_CUSTOM_ERROR, "Decompiler read bad wordIndex - maybe you trying to decompress original file (not compressed)");
     private static final RC RC_CONFIG_LZW_EXECUTOR_LOTS_ARGS = new RC(RC.RCWho.EXECUTOR, RC.RCType.CODE_CUSTOM_ERROR, "Some field in 'LZW_EXECUTOR' config, which must have 1 argument, has more than 1 argument");
 
-
     private final LZW_ConfGramAbstract grammar = new LZW_ExGrammar();
-    //private final TYPE[] supportedTypes = {TYPE.CHAR_ARRAY, TYPE.BYTE_ARRAY};
     private final TYPE[] supportedTypes = {TYPE.BYTE_ARRAY};
     private TYPE currentType = null;
 
@@ -51,26 +49,6 @@ public class LZW_Executor implements IExecutor {
             return dataToSend;
         }
     }
-
-    /*
-    private class CharBufferMediator implements IMediator {
-        @Override
-        public Object getData() {
-            if (bufferOutSize < 0)
-                return null;
-
-            assert (bufferOutSize % 2) == 0;
-            byte[] dataTmp = new byte[bufferOutSize];
-            System.arraycopy(bufferOut, 0, dataTmp, 0, bufferOutSize);
-            CharBuffer charBuf = ByteBuffer.wrap(dataTmp)
-                    .order(ByteOrder.BIG_ENDIAN)
-                    .asCharBuffer();
-            char[] dataToSend = new char[charBuf.remaining()];
-            charBuf.get(dataToSend);
-            return dataToSend;
-        }
-    }
-     */
 
     @Override
     public RC setConfig(String cfgFileName) {
@@ -167,8 +145,6 @@ public class LZW_Executor implements IExecutor {
     public IMediator getMediator(TYPE type) {
         if (type == TYPE.BYTE_ARRAY)
             return new ByteBufferMediator();
-        //else if (type == TYPE.CHAR_ARRAY)
-        //    return new CharBufferMediator();
         else
             return null;
     }
@@ -199,16 +175,6 @@ public class LZW_Executor implements IExecutor {
     private byte[] GetTransformedData() {
         if (currentType == TYPE.BYTE_ARRAY)
             return (byte[])mediator.getData();
-        /*else if (currentType == TYPE.CHAR_ARRAY) {
-            char[] charTmp = (char[])mediator.getData();
-            if (charTmp == null)
-                return null;
-
-            ByteBuffer bytes = ByteBuffer.allocate(charTmp.length * 2);
-            CharBuffer chars = bytes.asCharBuffer();
-            chars.put(charTmp);
-            return bytes.array();
-        }*/
         else
             return null;
     }

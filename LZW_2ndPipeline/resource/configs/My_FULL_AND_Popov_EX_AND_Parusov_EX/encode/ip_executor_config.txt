@@ -1,0 +1,1 @@
+TABLE_PATH = resource/configs/My_FULL_AND_Popov_EX_AND_Parusov_EX/encode/substitution_table.txt

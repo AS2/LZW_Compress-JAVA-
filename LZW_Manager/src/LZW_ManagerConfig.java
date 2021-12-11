@@ -5,12 +5,11 @@ public class LZW_ManagerConfig extends LZW_ConfGramAbstract {
         SRC_FILE,
         DIR_FILE,
         READER_CLASS,
-        EXECUTOR_CLASSES,
+        EXECUTOR_CLASS,
         WRITER_CLASS,
-        EXECUTOR_CONFIGS,
+        EXECUTOR_CONFIG,
         READER_CONFIG,
-        WRITER_CONFIG,
-        LOG_PATH
+        WRITER_CONFIG
     }
 
     protected LZW_ManagerConfig() {

@@ -1,8 +1,0 @@
-SRC_FILE = resource/res/encode_orwell_with_IP_WRITER.txt
-DIR_FILE = resource/res/decode_orwell_with_IP_WRITER.txt
-READER_CLASS=LZW_Reader
-EXECUTOR_CLASSES = LZW_Executor
-WRITER_CLASS = Writer
-EXECUTOR_CONFIGS = resource/configs/IP_WRITER/executor_config.txt
-READER_CONFIG = resource/configs/IP_WRITER/reader_config.txt
-WRITER_CONFIG = resource/configs/IP_WRITER/writer_config.txt

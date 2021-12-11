@@ -1,7 +1,7 @@
 import com.java_polytech.pipeline_interfaces.RC;
 
 public class LZW_ExProcessor {
-    private static boolean wasStarted = false;
+    private boolean wasStarted = false;
     private final static RC LZW_DECOMPRESS_BAD_WORD_INDEX = new RC(RC.RCWho.EXECUTOR, RC.RCType.CODE_CUSTOM_ERROR, "Readen bad word index");
 
     private LZW_ExVocabularyManager LZWVocabularyManager = new LZW_ExVocabularyManager();

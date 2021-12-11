@@ -1,0 +1,2 @@
+дек 11, 2021 5:13:45 PM LZW_Manager Run
+SEVERE: LZW Manager complete working process successful

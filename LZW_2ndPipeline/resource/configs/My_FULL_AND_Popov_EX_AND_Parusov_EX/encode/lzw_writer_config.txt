@@ -1,0 +1,12 @@
+# COMMENTS STARTS WITH '#' SYMBOL
+                  # OR WITH SOME SPACES IN BEGIN
+        # OR MAYBE '/t'
+
+# ---------------------------------------
+# WRITER CONFIG RULES:
+# 1) WRITER CONFIG MUST HAVE NEXT FIELDS:
+#           - BUFFER_SIZE - buffer size in bytes (must be > 0)
+
+# ----------------------------------------
+# REALISATION:
+    BUFFER_SIZE  =   512    
